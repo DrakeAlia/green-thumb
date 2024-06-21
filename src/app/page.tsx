@@ -78,7 +78,12 @@ export default function Home() {
                 Get Started
               </Button>
             </div>
-            <div className="md:w-1/2">
+            <motion.div
+              className="md:w-1/2"
+              initial={{ y: 50 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
               <Image
                 src="/images/cover.png"
                 alt="Smart Garden Device"
@@ -86,7 +91,7 @@ export default function Home() {
                 height={400}
                 className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-110"
               />
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </section>
@@ -145,17 +150,34 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
             Our Products
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.2,
+                },
+              },
+            }}
+            initial="hidden"
+            animate="show"
+          >
             {products.map((product, index) => (
               <motion.div
                 key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  show: { opacity: 1, y: 0 },
+                }}
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="p-4 rounded-lg shadow-md"
               >
                 <div
                   key={index}
-                  className=" p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="relative overflow-hidden rounded-lg mb-4">
                     <Image
@@ -164,6 +186,7 @@ export default function Home() {
                       width={300}
                       height={200}
                       layout="responsive"
+                      objectFit="cover"
                       className="transition-transform duration-300 hover:scale-110"
                     />
                   </div>
@@ -179,7 +202,7 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </AnimatedSection>
       </section>
       <motion.div

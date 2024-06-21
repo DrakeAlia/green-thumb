@@ -4,25 +4,25 @@ import Image from "next/image";
 export default function Home() {
   const products = [
     {
-      name: "Herb Garden",
+      name: "Smart Garden Device",
       image: "device-1.png",
     },
     {
-      name: "Vegetable Planter",
+      name: "Herb Garden Starter Kit",
       image: "device-2.png",
     },
     {
-      name: "Succulent Collection",
+      name: "Plant Care Monitor",
       image: "device-5.png",
     },
     {
-      name: "Vertical Garden",
+      name: "Smart Watering Can",
       image: "device-4.png",
     },
   ];
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <section className="container mx-auto px-4 py-16 md:py-24">
+      <section className="relative h-96">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 mb-8 md:mb-0">
             <h1 className="text-4xl md:text-6xl font-bold text-green-800 mb-4">

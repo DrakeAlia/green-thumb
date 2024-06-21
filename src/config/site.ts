@@ -6,6 +6,7 @@ export const siteConfig = {
   links: {
     twitter: "https://twitter.com/drake___alia",
     github: "https://github.com/DrakeAlia/green-thumb",
+    githubProject: "https://github.com/DrakeAlia/green-thumb",
   },
 };
 

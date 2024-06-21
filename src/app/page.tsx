@@ -1,5 +1,80 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+
+// export default function Home() {
+//   const products = [
+//     {
+//       name: "Smart Garden Device",
+//       price: "$99.99",
+//       image: "/images/device-1.png",
+//     },
+//     {
+//       name: "Herb Garden Starter Kit",
+//       price: "$49.99",
+//       image: "/images/device-2.png",
+//     },
+//     {
+//       name: "Plant Care Monitor",
+//       price: "$79.99",
+//       image: "/images/device-5.png",
+//     },
+//     {
+//       name: "Smart Plant Watering System",
+//       price: "$129.99",
+//       image: "/images/device-4.png",
+//     },
+//   ];
+
+//   return (
+//     <main className="flex min-h-screen flex-col items-center justify-between">
+//       <section className="relative w-full h-[600px]">
+//         <Image
+//           src="/images/cover.png"
+//           alt="Welcome to Green Thumb"
+//           fill
+//           className="object-cover"
+//         />
+//         <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col items-center justify-center text-white">
+//           <h1 className="text-6xl font-bold mb-4">Green Thumb</h1>
+//           <p className="text-xl max-w-md text-center bg-white bg-opacity-20 p-4 rounded">
+//             A simple gardening app that helps you keep track of your plants and
+//             their needs.
+//           </p>
+//         </div>
+//       </section>
+
+//       <section className="container mx-auto py-16">
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+//           {products.map((product, index) => (
+//             <div
+//               key={index}
+//               className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+//             >
+//               <div className="relative aspect-w-3 aspect-h-2 mb-4">
+//                 <Image
+//                   src={product.image}
+//                   alt={product.name}
+//                   fill
+//                   className="rounded-lg object-cover transition-transform duration-300 hover:scale-110"
+//                 />
+//               </div>
+//               <h3 className="text-lg font-semibold text-green-800 mb-2">
+//                 {product.name}
+//               </h3>
+//               <Button
+//                 variant="outline"
+//                 className="w-full hover:bg-green-50 transition-colors duration-300"
+//               >
+//                 Learn More
+//               </Button>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+//     </main>
+//   );
+// }
+
 
 export default function Home() {
   const products = [

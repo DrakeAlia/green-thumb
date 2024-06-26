@@ -12,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRef } from "react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);
@@ -49,55 +51,48 @@ export default function Home() {
     },
   ];
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <section className="relative h-96">
+    <main className="flex flex-col min-h-screen">
+      <section className="flex-grow flex flex-col items-center justify-center p-8 md:p-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center justify-between"
+          className="flex flex-col items-center justify-center text-center mb-12"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <h1 className="text-4xl md:text-6xl font-bold text-green-800 mb-4">
-                Smart Indoor Gardening
-              </h1>
-              <p
-                className="
-              text-lg text-green-700 mb-8 md:mb-12
-              max-w-md md:max-w-lg
-            "
-              >
-                Grow your own herbs and vegetables with ease using our
-                intelligent gardening system.
-              </p>
-              <Button
-                size="lg"
-                className="bg-green-600 hover:bg-green-700 text-white transition-colors duration-300"
-              >
-                Get Started
-              </Button>
-            </div>
-            <motion.div
-              className="md:w-1/2"
-              initial={{ y: 50 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <Image
-                src="/images/cover.png"
-                alt="Smart Garden Device"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-110"
-              />
-            </motion.div>
-          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-green-800 dark:text-green-100 mb-4">
+            Smart Indoor Gardening
+          </h1>
+          <p className="text-base md:text-lg text-green-700 dark:text-green-200 mb-6 md:mb-8 max-w-md md:max-w-lg">
+            Grow your own herbs and vegetables with ease using our intelligent
+            gardening system.
+          </p>
+          <Button
+            // size="lg"
+            // className="bg-green-600 hover:bg-green-800 text-white transition-colors duration-300"
+            className={cn(buttonVariants())}
+          >
+            Get Started
+          </Button>
+        </motion.div>
+        <motion.div
+          className="w-full max-w-4xl"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <Image
+            src="/images/cover.png"
+            alt="Smart Garden Device"
+            width={600}
+            height={400}
+            layout="responsive"
+            className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
+          />
         </motion.div>
       </section>
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
+      <section className="py-8 md:py-16">
+        <div className="container mx-auto px-4 md:px-8">
+          <h2 className="text-3xl font-bold text-center text-green-800 mb-12 dark:text-green-100 dark:text-center dark:text-3xl dark:mb-12">
             Key Features
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -147,7 +142,7 @@ export default function Home() {
       </section>
       <section className="container mx-auto px-4 py-16">
         <AnimatedSection>
-          <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
+          <h2 className="text-3xl font-bold text-center text-green-800 mb-12 dark:text-green-100 dark:text-center dark:text-3xl dark:mb-12">
             Our Products
           </h2>
           <motion.div
@@ -190,12 +185,15 @@ export default function Home() {
                       className="transition-transform duration-300 hover:scale-110"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold text-green-800 mb-2">
+                  <h3 className="text-lg font-semibold text-green-800 mb-2 dark:text-green-100 dark:text-lg dark:mb-2">
                     {product.name}
                   </h3>
                   <Button
                     variant="outline"
-                    className="w-full hover:bg-green-50 transition-colors duration-300"
+                    className={cn(
+                      "w-full bg-green-500  hover:bg-green-300 dark:bg-green-600 dark:hover:bg-green-600 transition-colors",
+                      index === 0 ? "mb-4" : ""
+                    )}
                   >
                     Learn More
                   </Button>
@@ -210,7 +208,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="bg-gradient-to-r from-green-400 to-green-600 text-white">
+        <Card className="bg-gradient-to-r from-blue-400 to-teal-200 text-white dark:from-tan-600 dark:to-teal-800 m-4">
           <CardHeader>
             <CardTitle className="text-4xl font-bold">
               Ready to start your indoor garden?
@@ -223,9 +221,10 @@ export default function Home() {
           </CardContent>
           <CardFooter>
             <Button
-              size="lg"
-              variant="secondary"
-              className="w-full hover:bg-white hover:text-green-600 transition-colors"
+              // size="lg"
+              // variant="secondary"
+              // className="w-full hover:bg-white hover:text-green-600 transition-colors"
+              className={cn(buttonVariants({ variant: "secondary" }))}
             >
               Get Your Smart Garden
             </Button>

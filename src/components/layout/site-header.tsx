@@ -2,12 +2,12 @@ import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/ui/icons";
 import { CommandMenu } from "@/components/command-menu";
-import { ModeToggle } from "./mode-toggle";
-import { buttonVariants } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icons";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
+import { ModeToggle } from "./mode-toggle";
+import { buttonVariants } from "@/components/ui/button";
 
 export function SiteHeader() {
   return (

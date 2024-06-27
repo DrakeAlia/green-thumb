@@ -8,54 +8,17 @@ interface miniNavConfig {
 export const miniNavConfig: miniNavConfig = {
   mainNav: [
     {
-      title: "Examples",
-      href: "/examples",
-    },
-    {
-      title: "Figma",
-      href: "/docs/figma",
-    },
-    {
       title: "GitHub",
-      href: "https://github.com/shadcn/ui",
+      href: "http://www.github.com/DrakeAlia",
       external: true,
     },
     {
       title: "Twitter",
-      href: "https://twitter.com/shadcn",
+      href: "https://twitter.com/drake___alia",
       external: true,
     },
   ],
   sidebarNav: [
-    {
-      title: "Getting Started",
-      items: [
-        {
-          title: "Introduction",
-          href: "/docs",
-          items: [],
-        },
-        {
-          title: "Installation",
-          href: "/docs/installation",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Components",
-      items: [
-        {
-          title: "Accordion",
-          href: "/docs/components/accordion",
-          items: [],
-        },
-        {
-          title: "Alert",
-          href: "/docs/components/alert",
-          items: [],
-        },
-      ],
-    },
+    
   ],
 };

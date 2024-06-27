@@ -44,11 +44,11 @@ export default function Home() {
       image: "device-1.png",
     },
     {
-      name: "Herb Garden Starter Kit",
+      name: "Smart Plant Monitor",
       image: "device-2.png",
     },
     {
-      name: "Plant Care Monitor",
+      name: "Smart Plant Pot",
       image: "device-5.png",
     },
     {
@@ -63,7 +63,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center text-center mb-8"
+          className="flex flex-col items-center justify-center text-center mb-4"
         >
           <PageHeader>
             <PageHeaderHeading>
@@ -74,7 +74,7 @@ export default function Home() {
             <PageHeaderDescription>
               Nurture your indoor garden from anywhere with our smart watering
               system. Our intelligent technology ensures your green friends are
-              always perfectly watered, whether you're home or away.
+              always perfectly watered, whether you&apos;re home or away
             </PageHeaderDescription>
             <PageActions>
               <Button className={cn(buttonVariants())}>Get Started</Button>
@@ -82,7 +82,7 @@ export default function Home() {
           </PageHeader>
         </motion.div>
         <motion.div
-          className="w-full max-w-4xl"
+          className="w-full max-w-6xl mx-auto"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -90,16 +90,15 @@ export default function Home() {
           <Image
             src="/images/cover.png"
             alt="Smart Garden Device"
-            width={600}
-            height={400}
-            layout="responsive"
-            className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
+            width={1200}
+            height={1200}
+            className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 mx-auto"
           />
         </motion.div>
       </section>
       <section className="py-8 md:py-16">
         <div className="container mx-auto px-4 md:px-8">
-          <h2 className="text-3xl font-bold text-center text-green-800 mb-12 dark:text-green-100 dark:text-center dark:text-3xl dark:mb-12">
+          <h2 className="text-primary text-3xl font-bold text-center mb-12">
             Key Features
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -128,20 +127,20 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-green-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
               >
-                <div
-                  key={index}
-                  className="bg-green-200 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="text-4xl mb-4 bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold text-green-800 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-green-700">{feature.description}</p>
-                </div>
+                <Card className="h-full">
+                  <CardHeader>
+                    <div className="text-4xl mb-4 bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center">
+                      {feature.icon}
+                    </div>
+                    <CardTitle className="text-xl font-semibold ">
+                      {feature.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="font-bold">{feature.description}</p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -149,7 +148,7 @@ export default function Home() {
       </section>
       <section className="container mx-auto px-4 py-16">
         <AnimatedSection>
-          <h2 className="text-3xl font-bold text-center text-green-800 mb-12 dark:text-green-100 dark:text-center dark:text-3xl dark:mb-12">
+          <h2 className="text-primary text-3xl font-bold text-center mb-12">
             Our Products
           </h2>
           <motion.div
@@ -175,30 +174,30 @@ export default function Home() {
                 }}
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="p-4 rounded-lg shadow-md"
               >
-                <div
-                  key={index}
-                  className="p-4 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="relative overflow-hidden rounded-lg mb-4">
-                    <Image
-                      src={`/images/${product.image}`}
-                      alt={product.name}
-                      width={300}
-                      height={200}
-                      layout="responsive"
-                      objectFit="cover"
-                      className="transition-transform duration-300 hover:scale-110"
-                    />
-                  </div>
-                  <h3 className="text-lg font-semibold text-green-800 mb-2 dark:text-green-100 dark:text-lg dark:mb-2">
-                    {product.name}
-                  </h3>
-                  <Button className={cn(buttonVariants(), "w-full")}>
-                    Learn More
-                  </Button>
-                </div>
+                <Card className="overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative w-full pb-[75%] overflow-hidden">
+                      <Image
+                        src={`/images/${product.image}`}
+                        alt={product.name}
+                        layout="fill"
+                        objectFit="cover"
+                        className="transition-transform duration-300 hover:scale-110"
+                      />
+                    </div>
+                  </CardContent>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold text-green-800 dark:text-green-100">
+                      {product.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button className={cn(buttonVariants(), "w-full")}>
+                      Learn More
+                    </Button>
+                  </CardFooter>
+                </Card>
               </motion.div>
             ))}
           </motion.div>

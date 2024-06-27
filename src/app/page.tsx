@@ -14,6 +14,12 @@ import {
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  PageActions,
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderHeading,
+} from "@/components/ui/page-header";
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);
@@ -52,27 +58,28 @@ export default function Home() {
   ];
   return (
     <main className="flex flex-col min-h-screen">
-      <section className="flex-grow flex flex-col items-center justify-center p-8 md:p-24">
+      <section className="flex-grow flex flex-col items-center justify-center p-4 md:p-12 pt-0 md:pt-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center text-center mb-12"
+          className="flex flex-col items-center justify-center text-center mb-8"
         >
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-green-800 dark:text-green-100 mb-4">
-            Smart Indoor Gardening
-          </h1>
-          <p className="text-base md:text-lg text-green-700 dark:text-green-200 mb-6 md:mb-8 max-w-md md:max-w-lg">
-            Grow your own herbs and vegetables with ease using our intelligent
-            gardening system.
-          </p>
-          <Button
-            // size="lg"
-            // className="bg-green-600 hover:bg-green-800 text-white transition-colors duration-300"
-            className={cn(buttonVariants())}
-          >
-            Get Started
-          </Button>
+          <PageHeader>
+            <PageHeaderHeading>
+              <span className="text-primary font-bold">
+                Smart Gardening Made Easy
+              </span>
+            </PageHeaderHeading>
+            <PageHeaderDescription>
+              Nurture your indoor garden from anywhere with our smart watering
+              system. Our intelligent technology ensures your green friends are
+              always perfectly watered, whether you're home or away.
+            </PageHeaderDescription>
+            <PageActions>
+              <Button className={cn(buttonVariants())}>Get Started</Button>
+            </PageActions>
+          </PageHeader>
         </motion.div>
         <motion.div
           className="w-full max-w-4xl"
@@ -188,13 +195,7 @@ export default function Home() {
                   <h3 className="text-lg font-semibold text-green-800 mb-2 dark:text-green-100 dark:text-lg dark:mb-2">
                     {product.name}
                   </h3>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full bg-green-500  hover:bg-green-300 dark:bg-green-600 dark:hover:bg-green-600 transition-colors",
-                      index === 0 ? "mb-4" : ""
-                    )}
-                  >
+                  <Button className={cn(buttonVariants(), "w-full")}>
                     Learn More
                   </Button>
                 </div>

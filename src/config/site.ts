@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "green-thumb",
+  name: "Green Thumb",
   url: "https://green-thumb.vercel.app",
   description:
     "A simple gardening app that helps you keep track of your plants and their needs.",

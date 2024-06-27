@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { docsConfig } from "@/config/docs";
+import { miniNavConfig } from "@/config/mini-nav";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,7 +77,7 @@ export function CommandMenu({ ...props }: DialogProps) {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
-            {docsConfig.mainNav
+            {miniNavConfig.mainNav
               .filter((navitem) => !navitem.external)
               .map((navItem) => (
                 <CommandItem
@@ -92,7 +92,7 @@ export function CommandMenu({ ...props }: DialogProps) {
                 </CommandItem>
               ))}
           </CommandGroup>
-          {docsConfig.sidebarNav.map((group) => (
+          {miniNavConfig.sidebarNav.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem) => (
                 <CommandItem

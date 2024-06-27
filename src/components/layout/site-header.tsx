@@ -6,19 +6,15 @@ import { Icons } from "@/components/ui/icons";
 import { CommandMenu } from "@/components/command-menu";
 import { ModeToggle } from "./mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
-// import { MainNav } from "@/components/layout/main-nav";
-// import { MobileNav } from "@/components/layout/mobile-nav";
-// import { SessionProvider } from "next-auth/react";
-// import SiteHeaderAuth from "./site-header-auth";
+import { MainNav } from "./main-nav";
+import { MobileNav } from "./mobile-nav";
 
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
-        {/* <SessionProvider> */}
-        {/* <MainNav />
-          <MobileNav /> */}
-        {/* </SessionProvider> */}
+        <MainNav />
+        <MobileNav />
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <CommandMenu />
@@ -59,9 +55,6 @@ export function SiteHeader() {
               </div>
             </Link>
             <ModeToggle />
-            {/* <SessionProvider>
-              <SiteHeaderAuth />
-            </SessionProvider> */}
           </nav>
         </div>
       </div>

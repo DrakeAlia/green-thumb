@@ -1,11 +1,11 @@
 import { MainNavItem, SidebarNavItem } from "../types/nav";
 
-interface DocsConfig {
+interface miniNavConfig {
   mainNav: MainNavItem[];
   sidebarNav: SidebarNavItem[];
 }
 
-export const docsConfig: DocsConfig = {
+export const miniNavConfig: miniNavConfig = {
   mainNav: [
     {
       title: "Examples",

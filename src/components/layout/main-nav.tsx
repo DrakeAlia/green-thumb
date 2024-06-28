@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
+import React from "react";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
@@ -13,20 +13,35 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { Button, buttonVariants } from "@/components/ui/button";
+
+// Define types for your motion values
+type LinkMotion = {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+  textX: MotionValue<number>;
+  textY: MotionValue<number>;
+};
+
+const LINKS = [
+  { path: "/features", name: "Features" },
+  { path: "/products", name: "Products" },
+];
+
+// Custom Hook to create motion values for each link
+const useLinkMotion = (): LinkMotion => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const textX = useTransform(x, (latest) => latest * 0.5);
+  const textY = useTransform(y, (latest) => latest * 0.5);
+  return { x, y, textX, textY };
+};
 
 export function MainNav() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  const links = [
-    { path: "/features", name: "Features" },
-    { path: "/products", name: "Products" },
-  ];
-
-  const MotionButton = motion(Button);
-
   const MotionLink = motion(Link);
+
+  // Create motion values for each link
+  const linkMotions = LINKS.map(() => useLinkMotion());
 
   const mapRange = (
     inputLower: number,
@@ -43,8 +58,8 @@ export function MainNav() {
   const setTransform = (
     item: HTMLElement & EventTarget,
     event: React.PointerEvent,
-    x: MotionValue,
-    y: MotionValue
+    x: MotionValue<number>,
+    y: MotionValue<number>
   ) => {
     const bounds = item.getBoundingClientRect();
     const relativeX = event.clientX - bounds.left;
@@ -70,46 +85,51 @@ export function MainNav() {
         </span>
       </Link>
       <nav className="flex items-center gap-5 text-sm">
-        <AnimatePresence>
-          {links.map((link) => {
-            const x = useMotionValue(0);
-            const y = useMotionValue(0);
-            const textX = useTransform(x, (latest) => latest * 0.5);
-            const textY = useTransform(y, (latest) => latest * 0.5);
-            return (
-              <motion.div
-                key={link.path}
-                onPointerMove={(event) => {
-                  const item = event.currentTarget;
-                  setTransform(item, event, x, y);
-                }}
-                onPointerLeave={(event) => {
-                  x.set(0);
-                  y.set(0);
-                }}
-                style={{ x, y }}
-              >
-                <MotionButton
-                  className={cn(buttonVariants())}
+        <ul className="flex gap-8">
+          <AnimatePresence>
+            {LINKS.map((link, index) => {
+              const { x, y, textX, textY } = linkMotions[index];
+              return (
+                <motion.li
+                  onPointerMove={(event) => {
+                    const item = event.currentTarget;
+                    setTransform(item, event, x, y);
+                  }}
+                  key={link.path}
+                  onPointerLeave={() => {
+                    x.set(0);
+                    y.set(0);
+                  }}
+                  style={{ x, y }}
                 >
-                  <motion.span
-                    style={{ x: textX, y: textY }}
-                    className="z-10 relative"
+                  <MotionLink
+                    className={cn(
+                      "font-medium relative rounded-md text-sm py-2 px-4 transition-all duration-500 ease-out hover:bg-blue-200",
+                      pathname === link.path ? "bg-slate-300" : ""
+                    )}
+                    href={link.path}
                   >
-                    {link.name}
-                  </motion.span>
-                  {pathname === link.path && (
-                    <motion.div
-                      transition={{ type: "spring" }}
-                      layoutId="underline"
-                      className="absolute w-full h-full rounded-md left-0 bottom-0 bg-blue-300 opacity-50"
-                    />
-                  )}
-                </MotionButton>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+                    <motion.span
+                      style={{ x: textX, y: textY }}
+                      className="z-10 relative"
+                    >
+                      {link.name}
+                    </motion.span>
+                    {pathname === link.path ? (
+                      <motion.div
+                        transition={{ type: "spring" }}
+                        layoutId="underline"
+                        className="absolute w-full h-full rounded-md left-0 bottom-0 bg-blue-400"
+                      >
+                        {" "}
+                      </motion.div>
+                    ) : null}
+                  </MotionLink>
+                </motion.li>
+              );
+            })}
+          </AnimatePresence>
+        </ul>
       </nav>
     </div>
   );

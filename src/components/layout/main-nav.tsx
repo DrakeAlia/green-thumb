@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,26 +22,29 @@ type LinkMotion = {
   textY: MotionValue<number>;
 };
 
+// Define the LINKS constant
 const LINKS = [
   { path: "/features", name: "Features" },
   { path: "/products", name: "Products" },
 ];
 
-// Custom Hook to create motion values for each link
-const useLinkMotion = (): LinkMotion => {
+// Custom hook for link motion
+function useLinkMotion(): LinkMotion {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const textX = useTransform(x, (latest) => latest * 0.5);
   const textY = useTransform(y, (latest) => latest * 0.5);
   return { x, y, textX, textY };
-};
+}
 
 export function MainNav() {
   const pathname = usePathname();
   const MotionLink = motion(Link);
 
   // Create motion values for each link
-  const linkMotions = LINKS.map(() => useLinkMotion());
+  const linkMotion1 = useLinkMotion();
+  const linkMotion2 = useLinkMotion();
+  const linkMotions = [linkMotion1, linkMotion2];
 
   const mapRange = (
     inputLower: number,

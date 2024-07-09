@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import {
@@ -13,23 +12,11 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
+import { Button, buttonVariants } from "../ui/button";
 
-// Define types for your motion values
-type LinkMotion = {
-  x: MotionValue<number>;
-  y: MotionValue<number>;
-  textX: MotionValue<number>;
-  textY: MotionValue<number>;
-};
+const BUTTONS = ["Features", "Products"];
 
-// Define the LINKS constant
-const LINKS = [
-  { path: "/features", name: "Features" },
-  { path: "/products", name: "Products" },
-];
-
-// Custom hook for link motion
-function useLinkMotion(): LinkMotion {
+function useButtonMotion() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const textX = useTransform(x, (latest) => latest * 0.5);
@@ -38,13 +25,10 @@ function useLinkMotion(): LinkMotion {
 }
 
 export function MainNav() {
-  const pathname = usePathname();
-  const MotionLink = motion(Link);
+  const MotionButton = motion(Button);
 
-  // Create motion values for each link
-  const linkMotion1 = useLinkMotion();
-  const linkMotion2 = useLinkMotion();
-  const linkMotions = [linkMotion1, linkMotion2];
+  // Create motion values for each button
+  const buttonMotions = BUTTONS.map(() => useButtonMotion());
 
   const mapRange = (
     inputLower: number,
@@ -75,7 +59,10 @@ export function MainNav() {
 
   return (
     <div className="mr-4 hidden md:flex items-center">
-      <Link href="/" className="mr-6 flex items-center space-x-2">
+      <MotionButton
+        variant="ghost"
+        className="mr-6 flex items-center space-x-2"
+      >
         <Image
           className="h-9 w-9 rounded-lg"
           src="/images/logo.png"
@@ -86,48 +73,44 @@ export function MainNav() {
         <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>
-      </Link>
+      </MotionButton>
       <nav className="flex items-center gap-5 text-sm">
         <ul className="flex gap-8">
           <AnimatePresence>
-            {LINKS.map((link, index) => {
-              const { x, y, textX, textY } = linkMotions[index];
+            {BUTTONS.map((buttonName, index) => {
+              const { x, y, textX, textY } = buttonMotions[index];
               return (
                 <motion.li
+                  key={buttonName}
                   onPointerMove={(event) => {
                     const item = event.currentTarget;
                     setTransform(item, event, x, y);
                   }}
-                  key={link.path}
                   onPointerLeave={() => {
                     x.set(0);
                     y.set(0);
                   }}
                   style={{ x, y }}
                 >
-                  <MotionLink
+                  <MotionButton
                     className={cn(
-                      "font-medium relative rounded-md text-sm py-2 px-4 transition-all duration-500 ease-out hover:bg-blue-200",
-                      pathname === link.path ? "bg-slate-300" : ""
+                      buttonVariants({ variant: "ghost" }),
+                      "relative"
                     )}
-                    href={link.path}
+                    onClick={() => console.log(`Clicked ${buttonName}`)}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <motion.span
                       style={{ x: textX, y: textY }}
                       className="z-10 relative"
                     >
-                      {link.name}
+                      {buttonName}
                     </motion.span>
-                    {pathname === link.path ? (
-                      <motion.div
-                        transition={{ type: "spring" }}
-                        layoutId="underline"
-                        className="absolute w-full h-full rounded-md left-0 bottom-0 bg-blue-400"
-                      >
-                        {" "}
-                      </motion.div>
-                    ) : null}
-                  </MotionLink>
+                  </MotionButton>
                 </motion.li>
               );
             })}

@@ -14,7 +14,6 @@ import { Toaster as DefaultToaster } from "@/components/ui/toaster";
 import { Toaster as NewYorkSonner } from "@/components/ui/sonner";
 import { Toaster as NewYorkToaster } from "@/components/ui/toaster";
 
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,

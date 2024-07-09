@@ -2,9 +2,9 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
+import { Button, buttonVariants } from "../ui/button";
 import {
   AnimatePresence,
   motion,
@@ -12,7 +12,6 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { Button, buttonVariants } from "../ui/button";
 
 const BUTTONS = ["Features", "Products"];
 
@@ -27,8 +26,10 @@ function useButtonMotion() {
 export function MainNav() {
   const MotionButton = motion(Button);
 
-  // Create motion values for each button
-  const buttonMotions = BUTTONS.map(() => useButtonMotion());
+  // Create motion values for each button outside of the render method
+  const buttonMotion1 = useButtonMotion();
+  const buttonMotion2 = useButtonMotion();
+  const buttonMotions = [buttonMotion1, buttonMotion2];
 
   const mapRange = (
     inputLower: number,

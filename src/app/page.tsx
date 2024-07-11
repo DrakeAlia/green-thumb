@@ -141,7 +141,7 @@ export default function Home() {
             >
               <Image
                 src="/images/cover.png"
-                alt="Smart Garden Device"
+                alt="Smart Garden System"
                 width={1200}
                 height={1200}
                 className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 mx-auto"

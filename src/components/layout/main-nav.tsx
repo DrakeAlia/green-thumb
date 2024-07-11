@@ -26,6 +26,8 @@ function useButtonMotion() {
 export function MainNav() {
   const MotionButton = motion(Button);
 
+  const logoMotion = useButtonMotion();
+
   // Create motion values for each button outside of the render method
   const buttonMotion1 = useButtonMotion();
   const buttonMotion2 = useButtonMotion();
@@ -64,13 +66,28 @@ export function MainNav() {
         variant="ghost"
         className="mr-6 flex items-center space-x-2"
       >
-        <Image
-          className="h-9 w-9 rounded-lg"
-          src="/images/logo.png"
-          alt="Logo"
-          width={50}
-          height={50}
-        />
+        <motion.div
+          onPointerMove={(event) => {
+            const item = event.currentTarget;
+            setTransform(item, event, logoMotion.x, logoMotion.y);
+          }}
+          onPointerLeave={() => {
+            logoMotion.x.set(0);
+            logoMotion.y.set(0);
+          }}
+          style={{ x: logoMotion.x, y: logoMotion.y }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Image
+            className="h-9 w-9 rounded-lg"
+            src="/images/logo.png"
+            alt="Logo"
+            width={50}
+            height={50}
+          />
+        </motion.div>
         <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>

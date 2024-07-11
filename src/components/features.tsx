@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { BackgroundGradient } from "./ui/background-gradient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const features = [
@@ -43,9 +44,16 @@ const FeatureCard = ({ feature }: { feature: (typeof features)[0] }) => (
 const FeaturesSection = () => (
   <section className="py-8 md:py-16">
     <div className="container mx-auto px-4 md:px-8">
-      <h2 className="text-primary text-3xl font-bold text-center mb-12">
+      <motion.h2
+        className="text-primary text-3xl font-bold text-center mb-12"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
         Key Features
-      </h2>
+      </motion.h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {features.map((feature, index) => (
           <motion.div

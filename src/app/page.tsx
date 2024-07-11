@@ -88,20 +88,6 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <section className="flex-grow flex flex-col items-center justify-center p-4 md:p-12 pt-0 md:pt-4">
         <motion.div
-          className="w-full max-w-6xl mx-auto"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <Image
-            src="/images/cover.png"
-            alt="Smart Garden Device"
-            width={1200}
-            height={1200}
-            className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 mx-auto"
-          />
-        </motion.div>
-        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -147,6 +133,20 @@ export default function Home() {
                 </MotionButton>
               </motion.div>
             </PageActions>
+            <motion.div
+              className="w-full max-w-6xl mx-auto"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <Image
+                src="/images/cover.png"
+                alt="Smart Garden Device"
+                width={1200}
+                height={1200}
+                className="rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 mx-auto"
+              />
+            </motion.div>
           </PageHeader>
         </motion.div>
       </section>

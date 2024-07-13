@@ -6,16 +6,57 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   motion,
   useAnimationControls,
   LazyMotion,
   domAnimation,
   m,
+  MotionValue,
+  useMotionValue,
+  useTransform,
 } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+
+function useButtonMotion() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const textX = useTransform(x, (latest) => latest * 0.5);
+  const textY = useTransform(y, (latest) => latest * 0.5);
+  return { x, y, textX, textY };
+}
+
+const setTransform = (
+  item: HTMLElement & EventTarget,
+  event: React.PointerEvent,
+  x: MotionValue<number>,
+  y: MotionValue<number>
+) => {
+  const bounds = item.getBoundingClientRect();
+  const relativeX = event.clientX - bounds.left;
+  const relativeY = event.clientY - bounds.top;
+  const xRange = mapRange(0, bounds.width, -1, 1)(relativeX);
+  const yRange = mapRange(0, bounds.height, -1, 1)(relativeY);
+  x.set(xRange * 5);
+  y.set(yRange * 5);
+};
+
+const mapRange = (
+  inputLower: number,
+  inputUpper: number,
+  outputLower: number,
+  outputUpper: number
+) => {
+  const INPUT_RANGE = inputUpper - inputLower;
+  const OUTPUT_RANGE = outputUpper - outputLower;
+  return (value: number) =>
+    outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
+};
+
+const MotionButton = motion(Button);
 
 const products = [
   {
@@ -46,57 +87,94 @@ interface Product {
   description: string;
 }
 
-const ProductCard = ({ product }: { product: Product }) => (
-  <m.div
-    whileHover={{
-      scale: 1.05,
-      boxShadow: "0px 0px 15px rgba(74, 222, 128, 0.2)",
-    }}
-    whileTap={{ scale: 0.95 }}
-    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    className="h-full"
-  >
-    <Card className="h-full flex flex-col overflow-hidden p-2">
-      <m.div className="relative pt-[100%]" whileHover={{ scale: 1.05 }}>
-        <Image
-          src={`/images/${product.image}`}
-          alt={product.name}
-          width={200}
-          height={200}
-          className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110 rounded-sm"
-        />
-      </m.div>
-      <CardHeader>
-        <m.h3
-          className="text-lg font-semibold text-primary"
-          whileHover={{ color: "#4ade80" }}
-          transition={{ duration: 0.2 }}
-        >
-          {product.name}
-        </m.h3>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <m.p
-          className="text-sm text-muted-foreground"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          {product.description}
-        </m.p>
-      </CardContent>
-      <CardFooter>
+const ProductCard = ({
+  product,
+  setTransform,
+}: {
+  product: Product;
+  setTransform: any;
+}) => {
+  const buttonMotion = useButtonMotion();
+
+  return (
+    <m.div
+      whileHover={{
+        scale: 1.03,
+        boxShadow: "0px 0px 15px rgba(229, 222, 20, 0.727)",
+      }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="h-full rounded-lg"
+    >
+      <Card className="h-full flex flex-col rounded-lg overflow-hidden backdrop-blur-sm p-4">
         <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
+          className="relative pt-[100%] overflow-hidden rounded-md"
+          whileHover={{ scale: 1.05 }}
         >
-          <Button className="w-full">Learn More</Button>
+          <Image
+            src={`/images/${product.image}`}
+            alt={product.name}
+            layout="fill"
+            objectFit="cover"
+            className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110"
+          />
         </m.div>
-      </CardFooter>
-    </Card>
-  </m.div>
-);
+        <CardHeader>
+          <m.h3
+            className="text-lg font-semibold text-primary"
+            whileHover={{
+              color: "#4ade80",
+              textShadow: "0 0 8px rgba(74, 222, 128, 0.3)",
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            {product.name}
+          </m.h3>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <m.p
+            className="text-md text-muted-foreground"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            {product.description}
+          </m.p>
+        </CardContent>
+        <CardFooter>
+          <motion.div
+            onPointerMove={(event) => {
+              const item = event.currentTarget;
+              setTransform(item, event, buttonMotion.x, buttonMotion.y);
+            }}
+            onPointerLeave={() => {
+              buttonMotion.x.set(0);
+              buttonMotion.y.set(0);
+            }}
+            style={{ x: buttonMotion.x, y: buttonMotion.y }}
+            className="w-full"
+          >
+            <MotionButton
+              className={cn(buttonVariants({}), "w-full")}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.span
+                style={{ x: buttonMotion.textX, y: buttonMotion.textY }}
+                className="z-10 relative"
+              >
+                View Product
+              </motion.span>
+            </MotionButton>
+          </motion.div>
+        </CardFooter>
+      </Card>
+    </m.div>
+  );
+};
 
 const ProductsSection = () => {
   const controls = useAnimationControls();
@@ -132,11 +210,12 @@ const ProductsSection = () => {
           className="absolute inset-0 from-primary/5 to-secondary/5"
           animate={{
             backgroundPosition: ["0% 0%", "100% 100%"],
-            transition: {
-              duration: 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-            },
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
           }}
         />
 
@@ -183,7 +262,7 @@ const ProductsSection = () => {
                   visible: { opacity: 1, y: 0 },
                 }}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} setTransform={setTransform} />
               </m.div>
             ))}
           </m.div>

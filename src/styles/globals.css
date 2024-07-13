@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-     --elastic-out: linear(
+    --elastic-out: linear(
       0,
       0.2178 2.1%,
       1.1144 8.49%,
@@ -32,7 +32,7 @@
       0.9981 86.66%,
       1
     );
-    
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;

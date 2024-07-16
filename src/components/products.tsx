@@ -60,23 +60,23 @@ const MotionButton = motion(Button);
 
 const products = [
   {
-    name: "Smart Garden Device",
-    image: "device-1.png",
+    name: "GreenHaven",
+    image: "greenhaven.png",
     description: "Automated watering and lighting system.",
   },
   {
-    name: "Smart Plant Monitor",
-    image: "device-2.png",
+    name: "BotaniTech",
+    image: "botanitech.png",
     description: "Monitor your plant's health and growth.",
   },
   {
-    name: "Smart Plant Pot",
-    image: "device-5.png",
+    name: "EcoGro",
+    image: "ecogro.png",
     description: "Self-watering pot with built-in sensors.",
   },
   {
-    name: "Smart Watering Can",
-    image: "device-4.png",
+    name: "PurePlant",
+    image: "pureplant.png",
     description: "Automated watering can with adjustable flow.",
   },
 ];

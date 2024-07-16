@@ -103,6 +103,7 @@ export function MobileNav() {
     return (value: number) =>
       outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
   };
+  
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

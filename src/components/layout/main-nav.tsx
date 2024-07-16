@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
@@ -24,6 +25,8 @@ function useButtonMotion() {
 }
 
 export function MainNav() {
+  const router = useRouter();
+
   const MotionButton = motion(Button);
 
   const logoMotion = useButtonMotion();
@@ -59,6 +62,34 @@ export function MainNav() {
     x.set(xRange * 5);
     y.set(yRange * 5);
   };
+
+  const handleScroll = (sectionId: string) => {
+    if (window.location.pathname === "/") {
+      scrollToSection(sectionId);
+    } else {
+      // If not on home page, navigate there first
+      router.push("/");
+      // Use setTimeout to wait for navigation to complete
+      setTimeout(() => scrollToSection(sectionId), 100);
+    }
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      // Calculate the offset to account for fixed headers if any
+      const offset = 80; // Adjust this value based on your header height
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const [activeSection, setActiveSection] = React.useState("");
 
   return (
     <div className="mr-4 hidden md:flex items-center">
@@ -115,7 +146,10 @@ export function MainNav() {
                       buttonVariants({ variant: "ghost" }),
                       "relative"
                     )}
-                    onClick={() => console.log(`Clicked ${buttonName}`)}
+                    onClick={() => {
+                      setActiveSection(buttonName.toLowerCase());
+                      handleScroll(buttonName.toLowerCase());
+                    }}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.05 }}

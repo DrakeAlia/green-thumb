@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -84,6 +84,27 @@ export default function Home() {
     return (value: number) =>
       outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const sections = ["features", "products"];
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { top, bottom } = element.getBoundingClientRect();
+          if (top <= 100 && bottom >= 100) {
+            // Update active section
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <main className="flex flex-col min-h-screen">
       <section className="flex-grow flex flex-col items-center justify-center p-4 md:p-12 pt-0 md:pt-4">
@@ -150,12 +171,15 @@ export default function Home() {
           </PageHeader>
         </motion.div>
       </section>
-      <section className="py-8 md:py-16">
+      <section id="features" className="py-8 md:py-16">
         <AnimatedSection>
           <FeaturesSection />
         </AnimatedSection>
       </section>
-      <section className="flex-grow flex flex-col items-center justify-center p-2">
+      <section
+        id="products"
+        className="flex-grow flex flex-col items-center justify-center p-2"
+      >
         <AnimatedSection>
           <ProductsSection />
         </AnimatedSection>

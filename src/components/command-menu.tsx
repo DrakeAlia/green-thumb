@@ -9,9 +9,9 @@ import {
   LaptopIcon,
   MoonIcon,
   SunIcon,
-  LayoutIcon, // for Features
-  PackageIcon, // for Products
-} from "lucide-react";
+  LayoutIcon,
+  BoxIcon,
+} from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -27,12 +27,6 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-
-// Wrap CommandDialog with motion
-const MotionCommandDialog = motion(CommandDialog);
-
-// Wrap CommandItem with motion
-const MotionCommandItem = motion(CommandItem);
 
 export function CommandMenu({ ...props }: DialogProps) {
   const router = useRouter();
@@ -67,9 +61,7 @@ export function CommandMenu({ ...props }: DialogProps) {
 
   const handleScroll = (sectionId: string) => {
     if (window.location.pathname !== "/") {
-      // If not on home page, navigate there first
       router.push("/");
-      // Use setTimeout to wait for navigation to complete
       setTimeout(() => scrollToSection(sectionId), 100);
     } else {
       scrollToSection(sectionId);
@@ -79,7 +71,7 @@ export function CommandMenu({ ...props }: DialogProps) {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
-      const offset = 80; // Adjust this value based on your header height
+      const offset = 80;
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -100,114 +92,83 @@ export function CommandMenu({ ...props }: DialogProps) {
         onClick={() => setOpen(true)}
         {...props}
       >
-        <span className="hidden lg:inline-flex">Search...</span>
+        <span className="hidden lg:inline-flex">Search Green Thumb...</span>
         <span className="inline-flex lg:hidden">Search...</span>
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
-      <AnimatePresence>
-        {open && (
-          <MotionCommandDialog
-            open={open}
-            onOpenChange={setOpen}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-          >
-            <CommandInput placeholder="Type a command or search..." />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup heading="Sections">
-                <MotionCommandItem
-                  value="Features"
-                  onSelect={() => {
-                    runCommand(() => handleScroll("features"));
-                  }}
-                  whileHover={{
-                    backgroundColor: "rgba(0,0,0,0.05)",
-                    scale: 1.02,
-                  }}
-                  whileTap={{ scale: 0.98 }}
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Sections">
+            <CommandItem
+              value="Features"
+              onSelect={() => runCommand(() => handleScroll("features"))}
+            >
+              <LayoutIcon className="mr-2 h-4 w-4" />
+              Features
+            </CommandItem>
+            <CommandItem
+              value="Products"
+              onSelect={() => runCommand(() => handleScroll("products"))}
+            >
+              <BoxIcon className="mr-2 h-4 w-4" />
+              Products
+            </CommandItem>
+          </CommandGroup>
+          <CommandGroup heading="Links">
+            {miniNavConfig.mainNav
+              .filter((navitem) => !navitem.external)
+              .map((navItem) => (
+                <CommandItem
+                  key={navItem.href}
+                  value={navItem.title}
+                  onSelect={() =>
+                    runCommand(() => router.push(navItem.href as string))
+                  }
                 >
-                  <LayoutIcon className="mr-2 h-4 w-4" />
-                  Features
-                </MotionCommandItem>
-                <MotionCommandItem
-                  value="Products"
-                  onSelect={() => {
-                    runCommand(() => handleScroll("products"));
-                  }}
-                  whileHover={{
-                    backgroundColor: "rgba(0,0,0,0.05)",
-                    scale: 1.02,
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <PackageIcon className="mr-2 h-4 w-4" />
-                  Products
-                </MotionCommandItem>
-              </CommandGroup>
-              <CommandGroup heading="Links">
-                {miniNavConfig.mainNav
-                  .filter((navitem) => !navitem.external)
-                  .map((navItem) => (
-                    <CommandItem
-                      key={navItem.href}
-                      value={navItem.title}
-                      onSelect={() => {
-                        runCommand(() => router.push(navItem.href as string));
-                      }}
-                    >
-                      <FileIcon className="mr-2 h-4 w-4" />
-                      {navItem.title}
-                    </CommandItem>
-                  ))}
-              </CommandGroup>
-              {miniNavConfig.sidebarNav.map((group) => (
-                <CommandGroup key={group.title} heading={group.title}>
-                  {group.items.map((navItem) => (
-                    <CommandItem
-                      key={navItem.href}
-                      value={navItem.title}
-                      onSelect={() => {
-                        runCommand(() => router.push(navItem.href as string));
-                      }}
-                    >
-                      <div className="mr-2 flex h-4 w-4 items-center justify-center">
-                        <CircleIcon className="h-3 w-3" />
-                      </div>
-                      {navItem.title}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
+                  <FileIcon className="mr-2 h-4 w-4" />
+                  {navItem.title}
+                </CommandItem>
               ))}
-              <CommandSeparator />
-              <CommandGroup heading="Theme">
+          </CommandGroup>
+          {miniNavConfig.sidebarNav.map((group) => (
+            <CommandGroup key={group.title} heading={group.title}>
+              {group.items.map((navItem) => (
                 <CommandItem
-                  onSelect={() => runCommand(() => setTheme("light"))}
+                  key={navItem.href}
+                  value={navItem.title}
+                  onSelect={() =>
+                    runCommand(() => router.push(navItem.href as string))
+                  }
                 >
-                  <SunIcon className="mr-2 h-4 w-4" />
-                  Light
+                  <div className="mr-2 flex h-4 w-4 items-center justify-center">
+                    <CircleIcon className="h-3 w-3" />
+                  </div>
+                  {navItem.title}
                 </CommandItem>
-                <CommandItem
-                  onSelect={() => runCommand(() => setTheme("dark"))}
-                >
-                  <MoonIcon className="mr-2 h-4 w-4" />
-                  Dark
-                </CommandItem>
-                <CommandItem
-                  onSelect={() => runCommand(() => setTheme("system"))}
-                >
-                  <LaptopIcon className="mr-2 h-4 w-4" />
-                  System
-                </CommandItem>
-              </CommandGroup>
-            </CommandList>
-          </MotionCommandDialog>
-        )}
-      </AnimatePresence>
+              ))}
+            </CommandGroup>
+          ))}
+          <CommandSeparator />
+          <CommandGroup heading="Theme">
+            <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
+              <SunIcon className="mr-2 h-4 w-4" />
+              Light
+            </CommandItem>
+            <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
+              <MoonIcon className="mr-2 h-4 w-4" />
+              Dark
+            </CommandItem>
+            <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
+              <LaptopIcon className="mr-2 h-4 w-4" />
+              System
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </>
   );
 }

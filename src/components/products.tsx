@@ -114,8 +114,8 @@ const ProductCard = ({
           <Image
             src={`/images/${product.image}`}
             alt={product.name}
-            layout="fill"
-            objectFit="cover"
+            width={400}
+            height={400}
             className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110"
           />
         </m.div>

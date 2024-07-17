@@ -83,27 +83,31 @@ export function MobileNav() {
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetClose>
+
         <MobileLink
           href="/"
           className="flex items-center mt-4"
           onOpenChange={setOpen}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Image
-              className="h-9 w-9 mr-3 rounded-lg"
-              src="/images/logo.png"
-              alt="Logo"
-              width={50}
-              height={50}
-            />
-          </motion.div>
-          <span className="font-bold">{siteConfig.name}</span>
+          <div className="flex items-center mt-4 mb-6">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Image
+                className="h-9 w-9 mr-3 rounded-lg"
+                src="/images/logo.png"
+                alt="Logo"
+                width={50}
+                height={50}
+              />
+            </motion.div>
+            <span className="font-bold text-lg">{siteConfig.name}</span>
+          </div>
         </MobileLink>
+
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-2">
             {miniNavConfig.sectionNav.map((item, index) => {
               const { x, y, textX, textY } = buttonMotions[index];
               return (
@@ -120,10 +124,7 @@ export function MobileNav() {
                   style={{ x, y }}
                 >
                   <MotionButton
-                    className={cn(
-                      "justify-start ml-2",
-                      buttonVariants({ variant: "ghost" })
-                    )}
+                    className={cn("", buttonVariants({ variant: "ghost" }))}
                     onClick={() => {
                       handleScroll(item.href, router, pathname);
                       setOpen(false);
@@ -157,7 +158,7 @@ export function MobileNav() {
                       href={item.href}
                       onOpenChange={setOpen}
                       className={cn(
-                        "ml-2 p-2 flex items-center space-x-2",
+                        "p-2 flex items-center space-x-2 w-full",
                         item.external ? "text-bold" : ""
                       )}
                     >
@@ -165,6 +166,7 @@ export function MobileNav() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.2 }}
+                        className="w-full"
                       >
                         {item.title}
                         {item.label && (

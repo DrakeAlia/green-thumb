@@ -91,11 +91,19 @@ export function MainNav() {
 
   const [activeSection, setActiveSection] = React.useState("");
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="mr-4 hidden md:flex items-center">
       <MotionButton
         variant="ghost"
         className="mr-6 flex items-center space-x-2"
+        onClick={scrollToTop}
       >
         <motion.div
           onPointerMove={(event) => {

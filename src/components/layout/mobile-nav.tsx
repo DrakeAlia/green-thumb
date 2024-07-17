@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Link, { LinkProps } from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { miniNavConfig } from "@/config/mini-nav";
+import {
+  miniNavConfig,
+  handleScroll,
+  useButtonMotion,
+  setTransform,
+} from "@/config/mini-nav";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -14,96 +19,22 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Icons } from "../ui/icons";
-import Image from "next/image";
 import { X } from "lucide-react";
-import {
-  motion,
-  MotionValue,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
-
-function useButtonMotion() {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const textX = useTransform(x, (latest) => latest * 0.5);
-  const textY = useTransform(y, (latest) => latest * 0.5);
-  return { x, y, textX, textY };
-}
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 // This is the mobile navigation component that is displayed on smaller screens.
-
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const [pendingScroll, setPendingScroll] = React.useState<string | null>(null);
 
   const MotionButton = motion(Button);
 
+  // Create button motions for each item in sectionNav
   const buttonMotion1 = useButtonMotion();
   const buttonMotion2 = useButtonMotion();
   const buttonMotions = [buttonMotion1, buttonMotion2];
-
-  useEffect(() => {
-    if (pendingScroll && pathname === "/") {
-      scrollToSection(pendingScroll);
-      setPendingScroll(null);
-    }
-  }, [pathname, pendingScroll]);
-
-  const handleScroll = (sectionId: string) => {
-    if (pathname === "/") {
-      scrollToSection(sectionId);
-    } else {
-      setPendingScroll(sectionId);
-      router.push("/");
-    }
-    setOpen(false);
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const offset = 80;
-      const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const setTransform = (
-    item: HTMLElement & EventTarget,
-    event: React.PointerEvent,
-    x: MotionValue<number>,
-    y: MotionValue<number>
-  ) => {
-    const bounds = item.getBoundingClientRect();
-    const relativeX = event.clientX - bounds.left;
-    const relativeY = event.clientY - bounds.top;
-    const xRange = mapRange(0, bounds.width, -1, 1)(relativeX);
-    const yRange = mapRange(0, bounds.height, -1, 1)(relativeY);
-    x.set(xRange * 5);
-    y.set(yRange * 5);
-  };
-
-  const mapRange = (
-    inputLower: number,
-    inputUpper: number,
-    outputLower: number,
-    outputUpper: number
-  ) => {
-    const INPUT_RANGE = inputUpper - inputLower;
-    const OUTPUT_RANGE = outputUpper - outputLower;
-    return (value: number) =>
-      outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
-  };
-  
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -146,7 +77,7 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="pr-0 bg-background/80 backdrop-blur-sm border-r transition-all duration-300"
+        className="pr-0 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-r transition-all duration-300"
       >
         <SheetClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
           <X className="h-4 w-4" />
@@ -154,28 +85,33 @@ export function MobileNav() {
         </SheetClose>
         <MobileLink
           href="/"
-          className="flex items-center"
+          className="flex items-center mt-4"
           onOpenChange={setOpen}
         >
-          <Image
-            className="h-9 w-9 mr-3 rounded-lg"
-            src="/images/logo.png"
-            alt="Logo"
-            width={50}
-            height={50}
-          />
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Image
+              className="h-9 w-9 mr-3 rounded-lg"
+              src="/images/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+            />
+          </motion.div>
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            {["Features", "Products"].map((buttonName, index) => {
+            {miniNavConfig.sectionNav.map((item, index) => {
               const { x, y, textX, textY } = buttonMotions[index];
               return (
                 <motion.div
-                  key={buttonName}
+                  key={item.title}
                   onPointerMove={(event) => {
-                    const item = event.currentTarget;
-                    setTransform(item, event, x, y);
+                    const element = event.currentTarget;
+                    setTransform(element, event, x, y);
                   }}
                   onPointerLeave={() => {
                     x.set(0);
@@ -185,10 +121,13 @@ export function MobileNav() {
                 >
                   <MotionButton
                     className={cn(
-                      "justify-start",
+                      "justify-start ml-2",
                       buttonVariants({ variant: "ghost" })
                     )}
-                    onClick={() => handleScroll(buttonName.toLowerCase())}
+                    onClick={() => {
+                      handleScroll(item.href, router, pathname);
+                      setOpen(false);
+                    }}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ scale: 1.05 }}
@@ -199,22 +138,43 @@ export function MobileNav() {
                       style={{ x: textX, y: textY }}
                       className="z-10 relative"
                     >
-                      {buttonName}
+                      {item.title}
                     </motion.span>
                   </MotionButton>
                 </motion.div>
               );
             })}
             {miniNavConfig.mainNav?.map(
-              (item) =>
+              (item, index) =>
                 item.href && (
-                  <MobileLink
+                  <motion.div
                     key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
                   >
-                    {item.title}
-                  </MobileLink>
+                    <MobileLink
+                      href={item.href}
+                      onOpenChange={setOpen}
+                      className={cn(
+                        "ml-2 p-2 flex items-center space-x-2",
+                        item.external ? "text-bold" : ""
+                      )}
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {item.title}
+                        {item.label && (
+                          <span className="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">
+                            {item.label}
+                          </span>
+                        )}
+                      </motion.div>
+                    </MobileLink>
+                  </motion.div>
                 )
             )}
           </div>
@@ -257,7 +217,6 @@ interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
   className?: string;
-  handleScroll?: (sectionId: string) => void; // Make it optional
 }
 
 function MobileLink({
@@ -265,15 +224,22 @@ function MobileLink({
   onOpenChange,
   className,
   children,
-  handleScroll,
   ...props
 }: MobileLinkProps) {
   const router = useRouter();
-  const isScrollLink = href === "#features" || href === "#products";
+  const pathname = usePathname();
 
-  const handleClick = () => {
-    if (isScrollLink && handleScroll) {
-      handleScroll(href.slice(1)); // Remove the '#' from the href
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); // Prevent default Link behavior
+
+    if (typeof href === "string") {
+      if (href.startsWith("#")) {
+        handleScroll(href.slice(1), router, pathname);
+      } else if (href.startsWith("http")) {
+        window.open(href, "_blank");
+      } else {
+        router.push(href);
+      }
     } else {
       router.push(href.toString());
     }
@@ -281,13 +247,15 @@ function MobileLink({
   };
 
   return (
-    <Link
-      href={href}
-      onClick={handleClick}
-      className={cn(className)}
-      {...props}
-    >
-      {children}
-    </Link>
+    <motion.div>
+      <Link
+        href={href}
+        onClick={handleClick}
+        className={cn(className, "block")}
+        {...props}
+      >
+        {children}
+      </Link>
+    </motion.div>
   );
 }

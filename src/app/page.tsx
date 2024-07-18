@@ -116,55 +116,74 @@ export default function Home() {
             className="object-cover transition-transform duration-300 hover:scale-105"
           />
         </motion.div>
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center justify-center text-center p-4 max-w-4xl mx-auto"
-          >
-            <PageHeader>
-              <PageHeaderHeading>
-                <span className="text-primary font-bold font-2xl">
-                  Gardening Made Easy
-                </span>
-              </PageHeaderHeading>
-              <PageHeaderDescription className="text-white">
-                Nurture your indoor garden from anywhere with our smart watering
-                system. Our intelligent technology ensures your green friends
-                are always perfectly watered, whether you&apos;re home or away
-              </PageHeaderDescription>
-              <PageActions>
-                <motion.div
-                  onPointerMove={(event) => {
-                    const item = event.currentTarget;
-                    setTransform(item, event, buttonMotion.x, buttonMotion.y);
-                  }}
-                  onPointerLeave={() => {
-                    buttonMotion.x.set(0);
-                    buttonMotion.y.set(0);
-                  }}
-                  style={{ x: buttonMotion.x, y: buttonMotion.y }}
-                >
-                  <MotionButton
-                    className={cn(buttonVariants({}))}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <motion.span
-                      style={{ x: buttonMotion.textX, y: buttonMotion.textY }}
-                      className="z-10 relative"
+        <div className="absolute inset-0 bg-black/40">
+          <div className="container mx-auto h-full flex items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-2xl text-left"
+            >
+              <PageHeader className="space-y-4">
+                <PageHeaderHeading>
+                  <span className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight block">
+                    Gardening made
+                    <br />
+                    <span className="text-primary">For everyone</span>
+                  </span>
+                </PageHeaderHeading>
+                <PageHeaderDescription className="text-white/80 text-xl font-semibold md:text-2xl max-w-xl">
+                  Our smart garden system makes it easy to grow your favorite
+                  plants indoors
+                </PageHeaderDescription>
+                <PageActions className="flex flex-col items-center justify-center w-full pt-4">
+                  <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
+                    <motion.div
+                      onPointerMove={(event) => {
+                        const item = event.currentTarget;
+                        setTransform(
+                          item,
+                          event,
+                          buttonMotion.x,
+                          buttonMotion.y
+                        );
+                      }}
+                      onPointerLeave={() => {
+                        buttonMotion.x.set(0);
+                        buttonMotion.y.set(0);
+                      }}
+                      style={{ x: buttonMotion.x, y: buttonMotion.y }}
                     >
-                      Get Started
-                    </motion.span>
-                  </MotionButton>
-                </motion.div>
-              </PageActions>
-            </PageHeader>
-          </motion.div>
+                      <MotionButton
+                        className={cn(buttonVariants({ size: "lg" }), "w-full")}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        Get Started
+                      </MotionButton>
+                    </motion.div>
+
+                    <MotionButton
+                      className={cn(
+                        buttonVariants({ size: "lg", variant: "secondary" }),
+                        "w-full "
+                      )}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Learn More
+                    </MotionButton>
+                  </div>
+                </PageActions>
+              </PageHeader>
+            </motion.div>
+          </div>
         </div>
       </section>
       <section id="features" className="py-8 md:py-16">
@@ -185,25 +204,33 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="flex flex-col justify-center items-center p-4">
-          <CardHeader>
-            <CardTitle className="text-primary text-4xl font-bold text-center">
-              Ready to start your indoor garden?
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription className="text-lg text-bold text-center">
-              Our smart garden system is the perfect solution for busy plant
-              lovers. Get started today and enjoy the benefits of a lush indoor
-              garden without the hassle.
-            </CardDescription>
-          </CardContent>
-          <CardFooter>
-            <Button className={cn(buttonVariants({}))}>
-              Get Your Smart Garden
-            </Button>
-          </CardFooter>
-        </Card>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <div className="container mx-auto h-full flex items-center">
+            <Card className="flex flex-col justify-center items-center p-4">
+              <CardHeader>
+                <CardTitle className="text-primary text-4xl font-bold text-center">
+                  Ready to start your indoor garden?
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-lg text-bold text-center">
+                  Our smart garden system is the perfect solution for busy plant
+                  lovers. Get started today and enjoy the benefits of a lush
+                  indoor garden without the hassle.
+                </CardDescription>
+              </CardContent>
+              <CardFooter>
+                <Button className={cn(buttonVariants({}))}>
+                  Get Your Smart Garden
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </motion.div>
       </motion.div>
     </main>
   );

@@ -99,25 +99,16 @@ export function MainNav() {
   };
 
   return (
-    <div className="mr-4 hidden md:flex items-center">
+    <div className="hidden md:flex items-center justify-between w-full">
+      {/* logo */}
       <MotionButton
         variant="ghost"
         className="mr-6 flex items-center space-x-2"
         onClick={scrollToTop}
       >
         <motion.div
-          onPointerMove={(event) => {
-            const item = event.currentTarget;
-            setTransform(item, event, logoMotion.x, logoMotion.y);
-          }}
-          onPointerLeave={() => {
-            logoMotion.x.set(0);
-            logoMotion.y.set(0);
-          }}
-          style={{ x: logoMotion.x, y: logoMotion.y }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
         >
           <Image
             className="h-9 w-9 rounded-lg"
@@ -131,7 +122,7 @@ export function MainNav() {
           {siteConfig.name}
         </span>
       </MotionButton>
-      <nav className="flex items-center gap-5 text-sm">
+      <nav className="flex-grow flex justify-center items-center">
         <ul className="flex gap-8">
           <AnimatePresence>
             {BUTTONS.map((buttonName, index) => {
@@ -150,10 +141,8 @@ export function MainNav() {
                   style={{ x, y }}
                 >
                   <MotionButton
-                    className={cn(
-                      buttonVariants({ variant: "ghost" }),
-                      "relative"
-                    )}
+                    variant="ghost"
+                    className="relative"
                     onClick={() => {
                       setActiveSection(buttonName.toLowerCase());
                       handleScroll(buttonName.toLowerCase());
@@ -177,6 +166,8 @@ export function MainNav() {
           </AnimatePresence>
         </ul>
       </nav>
+
+      <div className="w-[100px]"></div>
     </div>
   );
 }

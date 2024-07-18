@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   motion,
   useInView,
-  AnimatePresence,
   MotionValue,
   useMotionValue,
   useTransform,
@@ -55,10 +54,11 @@ function useButtonMotion() {
 }
 const MotionButton = motion(Button);
 
+// Home page component
 export default function Home() {
   const buttonMotion = useButtonMotion();
 
-  const [scrollY, setScrollY] = useState(0);
+  const scrollY = useMotionValue(0);
 
   const setTransform = (
     item: HTMLElement & EventTarget,
@@ -88,24 +88,34 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => scrollY.set(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [scrollY]);
 
-  const coverImageHeight = Math.max(400, 800 - scrollY * 0.5);
+  const coverImageHeight = useTransform(scrollY, (latest) =>
+    Math.max(400, 800 - latest * 0.5)
+  );
+
+  const y = useTransform(scrollY, [0, 1], [0, 0.5]);
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+  };
 
   return (
     <main className="flex flex-col min-h-screen">
-      <section
+      <motion.section
         className="relative overflow-hidden"
-        style={{ height: `${coverImageHeight}px`, minHeight: "600px" }}
+        style={{ height: coverImageHeight, minHeight: "600px" }}
       >
         <motion.div
           className="absolute inset-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
+          style={{ y }}
         >
           <Image
             src="/images/cover.png"
@@ -119,78 +129,112 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto h-full flex items-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, staggerChildren: 0.2 }}
               className="max-w-2xl text-left"
             >
               <PageHeader className="space-y-4">
-                <PageHeaderHeading>
-                  <span className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight block">
-                    Gardening made
-                    <br />
-                    <span className="text-primary">For everyone</span>
-                  </span>
-                </PageHeaderHeading>
-                <PageHeaderDescription className="text-white/80 text-xl font-semibold md:text-2xl max-w-xl">
-                  Our smart garden system makes it easy to grow your favorite
-                  plants indoors
-                </PageHeaderDescription>
-                <PageActions className="flex flex-col items-center justify-center w-full pt-4">
-                  <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
-                    <motion.div
-                      onPointerMove={(event) => {
-                        const item = event.currentTarget;
-                        setTransform(
-                          item,
-                          event,
-                          buttonMotion.x,
-                          buttonMotion.y
-                        );
-                      }}
-                      onPointerLeave={() => {
-                        buttonMotion.x.set(0);
-                        buttonMotion.y.set(0);
-                      }}
-                      style={{ x: buttonMotion.x, y: buttonMotion.y }}
-                    >
+                <motion.div
+                  variants={fadeInUp}
+                  initial="initial"
+                  animate="animate"
+                  transition={{ duration: 0.6 }}
+                >
+                  <PageHeaderHeading>
+                    <span className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight block">
+                      Gardening made
+                      <br />
+                      <span className="text-primary">For everyone</span>
+                    </span>
+                  </PageHeaderHeading>
+                </motion.div>
+                <motion.div
+                  variants={fadeInUp}
+                  initial="initial"
+                  animate="animate"
+                  transition={{ duration: 0.6 }}
+                >
+                  <PageHeaderDescription className="text-white/80 text-xl font-semibold md:text-2xl max-w-xl">
+                    Our smart garden system makes it easy to grow your favorite
+                    plants indoors
+                  </PageHeaderDescription>
+                </motion.div>
+                <motion.div
+                  variants={fadeInUp}
+                  initial="initial"
+                  animate="animate"
+                  transition={{ duration: 0.6 }}
+                >
+                  <PageActions className="flex flex-col items-center justify-center w-full pt-4">
+                    <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
+                      <motion.div
+                        onPointerMove={(event) => {
+                          const item = event.currentTarget;
+                          setTransform(
+                            item,
+                            event,
+                            buttonMotion.x,
+                            buttonMotion.y
+                          );
+                        }}
+                        onPointerLeave={() => {
+                          buttonMotion.x.set(0);
+                          buttonMotion.y.set(0);
+                        }}
+                        style={{ x: buttonMotion.x, y: buttonMotion.y }}
+                      >
+                        <MotionButton
+                          className={cn(
+                            buttonVariants({ size: "lg" }),
+                            "w-full"
+                          )}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 17,
+                          }}
+                        >
+                          Get Started
+                        </MotionButton>
+                      </motion.div>
+
                       <MotionButton
-                        className={cn(buttonVariants({ size: "lg" }), "w-full")}
+                        className={cn(
+                          buttonVariants({ size: "lg", variant: "secondary" }),
+                          "w-full "
+                        )}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 17,
+                        }}
                       >
-                        Get Started
+                        Learn More
                       </MotionButton>
-                    </motion.div>
-
-                    <MotionButton
-                      className={cn(
-                        buttonVariants({ size: "lg", variant: "secondary" }),
-                        "w-full "
-                      )}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      Learn More
-                    </MotionButton>
-                  </div>
-                </PageActions>
+                    </div>
+                  </PageActions>
+                </motion.div>
               </PageHeader>
             </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
+
       <section id="features" className="py-8 md:py-16">
         <AnimatedSection>
           <FeaturesSection />
         </AnimatedSection>
       </section>
+
       <section
         id="products"
         className="flex-grow flex flex-col items-center justify-center p-2"
@@ -199,6 +243,7 @@ export default function Home() {
           <ProductsSection />
         </AnimatedSection>
       </section>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -209,7 +254,7 @@ export default function Home() {
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="container mx-auto h-full flex items-center">
+          <motion.div className="container mx-auto h-full flex items-center">
             <Card className="flex flex-col justify-center items-center p-4">
               <CardHeader>
                 <CardTitle className="text-primary text-4xl font-bold text-center">
@@ -224,12 +269,21 @@ export default function Home() {
                 </CardDescription>
               </CardContent>
               <CardFooter>
-                <Button className={cn(buttonVariants({}))}>
+                <MotionButton
+                  className={cn(buttonVariants({}))}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                  }}
+                >
                   Get Your Smart Garden
-                </Button>
+                </MotionButton>
               </CardFooter>
             </Card>
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
     </main>

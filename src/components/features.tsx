@@ -225,7 +225,7 @@ const FeaturesSection = () => {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
           <m.h2
-            className="text-4xl font-bold text-center mb-12 text-primary relative overflow-hidden cursor-default"
+            className="text-6xl font-bold text-center mb-12 text-primary relative overflow-hidden cursor-default"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, type: "spring", stiffness: 100 }}

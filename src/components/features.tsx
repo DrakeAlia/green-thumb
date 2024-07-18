@@ -114,7 +114,7 @@ const FeatureCard = ({
       <Card className="h-full flex flex-col rounded-lg overflow-hidden backdrop-blur-sm p-4 sm:p-6">
         <CardHeader className="pb-2 sm:pb-4 text-center">
           <m.h3
-            className="text-lg sm:text-xl font-semibold text-primary"
+            className="text-xl sm:text-2xl font-semibold text-primary"
             whileHover={{
               color: "#4ade80",
               textShadow: "0 0 8px rgba(74, 222, 128, 0.3)",
@@ -140,7 +140,7 @@ const FeatureCard = ({
         </m.div>
         <CardContent className="flex-grow flex flex-col items-center justify-center">
           <m.p
-            className="text-md sm:text-base text-muted-foreground text-center mb-4"
+            className="text-md sm:text-base text-muted-foreground text-center mt-2 mb-4"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -223,9 +223,9 @@ const FeaturesSection = () => {
           }}
         />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <m.h2
-            className="text-6xl font-bold text-center mb-12 text-primary relative overflow-hidden cursor-default"
+            className="text-6xl font-bold text-center mb-20 text-primary relative overflow-hidden cursor-default"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
@@ -252,7 +252,7 @@ const FeaturesSection = () => {
           </m.h2>
 
           <m.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12"
             variants={{
               hidden: { opacity: 0 },
               visible: { opacity: 1 },

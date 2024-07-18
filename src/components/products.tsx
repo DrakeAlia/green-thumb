@@ -106,9 +106,9 @@ const ProductCard = ({
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="h-full rounded-lg"
     >
-      <Card className="h-full flex flex-col rounded-lg overflow-hidden backdrop-blur-sm p-4">
+      <Card className="h-full flex flex-col rounded-lg overflow-hidden backdrop-blur-sm p-4 sm:p-6 lg:p-8">
         <m.div
-          className="relative pt-[100%] overflow-hidden rounded-md"
+          className="relative pt-[100%] sm:pt-[120%] lg:pt-[100%] overflow-hidden rounded-md"
           whileHover={{ scale: 1.05 }}
         >
           <Image
@@ -116,12 +116,12 @@ const ProductCard = ({
             alt={product.name}
             width={400}
             height={400}
-            className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110"
+            className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110 object-cover"
           />
         </m.div>
         <CardHeader>
           <m.h3
-            className="text-lg font-semibold text-primary"
+            className="text-xl sm:text-2xl lg:text-3xl font-semibold text-primary"
             whileHover={{
               color: "#4ade80",
               textShadow: "0 0 8px rgba(74, 222, 128, 0.3)",
@@ -133,7 +133,7 @@ const ProductCard = ({
         </CardHeader>
         <CardContent className="flex-grow">
           <m.p
-            className="text-md text-muted-foreground"
+            className="text-base sm:text-lg lg:text-xl text-muted-foreground"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -204,7 +204,7 @@ const ProductsSection = () => {
             },
           },
         }}
-        className="py-16 relative overflow-hidden"
+        className="py-16 sm:py-24 lg:py-32 relative overflow-hidden"
       >
         <m.div
           className="absolute inset-0 from-primary/5 to-secondary/5"
@@ -219,9 +219,9 @@ const ProductsSection = () => {
           }}
         />
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-full">
           <m.h2
-            className="text-6xl font-bold text-center mb-12 text-primary relative overflow-hidden cursor-default"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-16 sm:mb-20 lg:mb-24 text-primary relative overflow-hidden cursor-default"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
@@ -248,7 +248,7 @@ const ProductsSection = () => {
           </m.h2>
 
           <m.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 sm:gap-12 lg:gap-16"
             variants={{
               hidden: { opacity: 0 },
               visible: { opacity: 1 },

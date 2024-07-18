@@ -103,12 +103,13 @@ export function MainNav() {
       {/* logo */}
       <MotionButton
         variant="ghost"
-        className="mr-6 flex items-center space-x-2"
+        className="mr-6 flex items-center space-x-2 min-w-[150px]"
         onClick={scrollToTop}
       >
         <motion.div
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="flex-shrink-0" // Prevent shrinking
         >
           <Image
             className="h-9 w-9 rounded-lg"

@@ -26,8 +26,13 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/ui/page-header";
-import ProductsSection from "@/components/products";
-import FeaturesSection from "@/components/features";
+import dynamic from "next/dynamic";
+const ProductsSection = dynamic(() => import("@/components/products"), {
+  ssr: false,
+});
+const FeaturesSection = dynamic(() => import("@/components/features"), {
+  ssr: false,
+});
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);

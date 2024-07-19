@@ -97,11 +97,16 @@ export default function Home() {
     Math.max(400, 800 - latest * 0.5)
   );
 
-  const y = useTransform(scrollY, [0, 1], [0, 0.5]);
+  const y = useTransform(scrollY, [0, 1], [0, 0.3]);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
+  };
+
+  const fadeInUpTransition = {
+    duration: 0.8,
+    ease: [0.6, -0.05, 0.01, 0.99],
   };
 
   return (
@@ -111,11 +116,10 @@ export default function Home() {
         style={{ height: coverImageHeight, minHeight: "600px" }}
       >
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 bg-gradient-to-b from-transparent"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          style={{ y }}
+          transition={{ duration: 1.5 }}
         >
           <Image
             src="/images/cover.png"
@@ -139,21 +143,33 @@ export default function Home() {
                   variants={fadeInUp}
                   initial="initial"
                   animate="animate"
-                  transition={{ duration: 0.6 }}
+                  transition={fadeInUpTransition}
                 >
                   <PageHeaderHeading>
-                    <span className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight block">
+                    <motion.span
+                      className="text-white font-bold text-5xl md:text-6xl lg:text-7xl leading-tight block"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2, duration: 0.8 }}
+                    >
                       Gardening made
                       <br />
-                      <span className="text-primary">For everyone</span>
-                    </span>
+                      <motion.span
+                        className="text-primary"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.8 }}
+                      >
+                        For everyone
+                      </motion.span>
+                    </motion.span>
                   </PageHeaderHeading>
                 </motion.div>
                 <motion.div
                   variants={fadeInUp}
                   initial="initial"
                   animate="animate"
-                  transition={{ duration: 0.6 }}
+                  transition={{ ...fadeInUpTransition, delay: 0.2 }}
                 >
                   <PageHeaderDescription className="text-white/80 text-xl font-semibold md:text-2xl max-w-xl">
                     Our smart garden system makes it easy to grow your favorite
@@ -164,7 +180,7 @@ export default function Home() {
                   variants={fadeInUp}
                   initial="initial"
                   animate="animate"
-                  transition={{ duration: 0.6 }}
+                  transition={fadeInUpTransition}
                 >
                   <PageActions className="flex flex-col items-center justify-center w-full pt-4">
                     <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">

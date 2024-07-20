@@ -257,6 +257,10 @@ const ShaderMaterial = ({
 
   // Shader material
   const material = useMemo(() => {
+    const getUniforms = () => {
+      const preparedUniforms: any = {};
+      return preparedUniforms;
+    };
     const materialObject = new THREE.ShaderMaterial({
       vertexShader: `
       precision mediump float;
@@ -280,7 +284,7 @@ const ShaderMaterial = ({
     });
 
     return materialObject;
-  }, [size.width, size.height, source]);
+  }, [source]);
 
   return (
     <mesh ref={ref as any}>

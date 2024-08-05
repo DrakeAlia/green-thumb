@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sheet";
 import { X } from "lucide-react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 // This is the mobile navigation component that is displayed on smaller screens.
 export function MobileNav() {
@@ -79,10 +79,12 @@ export function MobileNav() {
         side="left"
         className="pr-0 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-r transition-all duration-300"
       >
-        <SheetClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </SheetClose>
+        <motion.div whileHover={{ rotate: 90 }} transition={{ duration: 0.2 }}>
+          <SheetClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </SheetClose>
+        </motion.div>
 
         <MobileLink
           href="/"
@@ -145,14 +147,15 @@ export function MobileNav() {
                 </motion.div>
               );
             })}
-            {miniNavConfig.mainNav?.map(
-              (item, index) =>
-                item.href && (
+            <AnimatePresence>
+              {miniNavConfig.mainNav?.map((item, index) =>
+                item.href ? (
                   <motion.div
                     key={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ delay: index * 0.1 }}
                   >
                     <MobileLink
                       href={item.href}
@@ -177,8 +180,9 @@ export function MobileNav() {
                       </motion.div>
                     </MobileLink>
                   </motion.div>
-                )
-            )}
+                ) : null
+              )}
+            </AnimatePresence>
           </div>
           <div className="flex flex-col space-y-2">
             {miniNavConfig.sidebarNav.map((item, index) => (

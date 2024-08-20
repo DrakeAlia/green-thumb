@@ -27,6 +27,7 @@ import {
   PageHeaderHeading,
 } from "@/components/ui/page-header";
 import dynamic from "next/dynamic";
+
 const ProductsSection = dynamic(() => import("@/components/products"), {
   ssr: false,
 });

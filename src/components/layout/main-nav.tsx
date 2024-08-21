@@ -1,4 +1,5 @@
-"use client";
+// Importing necessary dependencies and components
+"use client"; // Indicates this is a client-side component
 
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -14,28 +15,34 @@ import {
   useTransform,
 } from "framer-motion";
 
+// Array of button names for navigation
 const BUTTONS = ["Features", "Products"];
 
+// Custom hook for button motion effects
 function useButtonMotion() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  // Transform x and y values for text movement (half of the button movement)
   const textX = useTransform(x, (latest) => latest * 0.5);
   const textY = useTransform(y, (latest) => latest * 0.5);
   return { x, y, textX, textY };
 }
-
+// MainNav component: Representing the main navigation bar of the website.
 export function MainNav() {
   const router = useRouter();
 
+  // Creating a motion-enabled Button component
   const MotionButton = motion(Button);
 
+  // Motion values for logo animation
   const logoMotion = useButtonMotion();
 
-  // Create motion values for each button outside of the render method
+  // Create motion values for each navigation button
   const buttonMotion1 = useButtonMotion();
   const buttonMotion2 = useButtonMotion();
   const buttonMotions = [buttonMotion1, buttonMotion2];
 
+  // Utility function to map a value from one range to another
   const mapRange = (
     inputLower: number,
     inputUpper: number,
@@ -48,6 +55,7 @@ export function MainNav() {
       outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
   };
 
+  // Function to set transform values based on pointer position
   const setTransform = (
     item: HTMLElement & EventTarget,
     event: React.PointerEvent,
@@ -63,6 +71,7 @@ export function MainNav() {
     y.set(yRange * 5);
   };
 
+  // Function to handle scrolling to sections
   const handleScroll = (sectionId: string) => {
     if (window.location.pathname === "/") {
       scrollToSection(sectionId);
@@ -74,6 +83,7 @@ export function MainNav() {
     }
   };
 
+  // Function to scroll to a specific section
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -89,8 +99,10 @@ export function MainNav() {
     }
   };
 
+  // State to keep track of active section
   const [activeSection, setActiveSection] = React.useState("");
 
+  // Function to scroll to the top of the page
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -100,7 +112,7 @@ export function MainNav() {
 
   return (
     <div className="hidden md:flex items-center justify-between w-full">
-      {/* logo */}
+      {/* Logo button */}
       <MotionButton
         variant="ghost"
         className="mr-6 flex items-center space-x-2 min-w-[150px]"
@@ -109,7 +121,7 @@ export function MainNav() {
         <motion.div
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="flex-shrink-0" // Prevent shrinking
+          className="flex-shrink-0"
         >
           <Image
             className="h-9 w-9 rounded-lg"
@@ -123,6 +135,8 @@ export function MainNav() {
           {siteConfig.name}
         </span>
       </MotionButton>
+
+      {/* Navigation menu */}
       <nav className="flex-grow flex justify-center items-center">
         <ul className="flex gap-8">
           <AnimatePresence>
@@ -168,6 +182,7 @@ export function MainNav() {
         </ul>
       </nav>
 
+      {/* Placeholder div for layout balance */}
       <div className="w-[100px]"></div>
     </div>
   );

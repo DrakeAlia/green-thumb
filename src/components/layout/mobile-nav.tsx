@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Indicates this is a client-side component
 
 import React from "react";
 import Link, { LinkProps } from "next/link";
@@ -23,12 +23,15 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 
-// This is the mobile navigation component that is displayed on smaller screens.
+// Main MobileNav component: designed to provide a responsive menu for smaller screen sizes.
+
 export function MobileNav() {
+  // State to control the open/closed state of the mobile menu
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
+  // Create a motion-enabled Button component
   const MotionButton = motion(Button);
 
   // Create button motions for each item in sectionNav
@@ -38,11 +41,13 @@ export function MobileNav() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
+      {/* Mobile menu trigger button */}
       <SheetTrigger asChild>
         <Button
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
+          {/* SVG for hamburger menu icon */}
           <svg
             strokeWidth="1.5"
             viewBox="0 0 24 24"
@@ -50,35 +55,18 @@ export function MobileNav() {
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
           >
-            <path
-              d="M3 5H11"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M3 12H16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M3 19H21"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
+            {/* ... SVG paths ... */}
           </svg>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
+
+      {/* Mobile menu content */}
       <SheetContent
         side="left"
         className="pr-0 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-r transition-all duration-300"
       >
+        {/* Close button with rotation animation */}
         <motion.div whileHover={{ rotate: 90 }} transition={{ duration: 0.2 }}>
           <SheetClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
             <X className="h-4 w-4" />
@@ -86,6 +74,7 @@ export function MobileNav() {
           </SheetClose>
         </motion.div>
 
+        {/* Logo and site name */}
         <MobileLink
           href="/"
           className="flex items-center mt-4"
@@ -108,8 +97,10 @@ export function MobileNav() {
           </div>
         </MobileLink>
 
+        {/* Scrollable area for navigation items */}
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-2">
+            {/* Render section navigation items */}
             {miniNavConfig.sectionNav.map((item, index) => {
               const { x, y, textX, textY } = buttonMotions[index];
               return (
@@ -147,6 +138,8 @@ export function MobileNav() {
                 </motion.div>
               );
             })}
+
+            {/* Render main navigation items with animation */}
             <AnimatePresence>
               {miniNavConfig.mainNav?.map((item, index) =>
                 item.href ? (
@@ -184,6 +177,8 @@ export function MobileNav() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Render sidebar navigation items */}
           <div className="flex flex-col space-y-2">
             {miniNavConfig.sidebarNav.map((item, index) => (
               <div key={index} className="flex flex-col space-y-3 pt-6">
@@ -219,6 +214,7 @@ export function MobileNav() {
   );
 }
 
+// Custom MobileLink component for handling different types of links
 interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;

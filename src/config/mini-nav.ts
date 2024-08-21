@@ -1,6 +1,9 @@
 import { useMotionValue, useTransform, MotionValue } from "framer-motion";
 import { MainNavItem, SidebarNavItem } from "../types/nav";
 
+// The file imports motion-related functions from Framer Motion and custom navigation types.
+
+// Custom hook for button motion effects
 export function useButtonMotion() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -9,6 +12,7 @@ export function useButtonMotion() {
   return { x, y, textX, textY };
 }
 
+// Function to set transform based on pointer position
 export const setTransform = (
   item: HTMLElement & EventTarget,
   event: React.PointerEvent,
@@ -24,6 +28,7 @@ export const setTransform = (
   y.set(yRange * 5);
 };
 
+// Utility function to map a range of values
 export const mapRange = (
   inputLower: number,
   inputUpper: number,
@@ -36,6 +41,7 @@ export const mapRange = (
     outputLower + (((value - inputLower) / INPUT_RANGE) * OUTPUT_RANGE || 0);
 };
 
+// Interface for the navigation configuration
 interface MiniNavConfig {
   mainNav: MainNavItem[];
   sidebarNav: SidebarNavItem[];
@@ -45,6 +51,7 @@ interface MiniNavConfig {
   }[];
 }
 
+// Navigation configuration object
 export const miniNavConfig: MiniNavConfig = {
   mainNav: [
     {
@@ -71,6 +78,7 @@ export const miniNavConfig: MiniNavConfig = {
   ],
 };
 
+// Function to handle scrolling to sections
 export function handleScroll(sectionId: string, router: any, pathname: string) {
   if (pathname === "/") {
     scrollToSection(sectionId);
@@ -80,6 +88,7 @@ export function handleScroll(sectionId: string, router: any, pathname: string) {
   }
 }
 
+// Helper function to scroll to a specific section
 function scrollToSection(sectionId: string) {
   const section = document.getElementById(sectionId);
   if (section) {

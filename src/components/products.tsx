@@ -21,7 +21,12 @@ import {
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
-// This ProductsSection component creates an engaging display of products, using advanced animations and responsive design to create a modern and interactive user interface. It's structured to be easily maintainable, with the product data separated from the rendering logic, allowing for easy updates or additions to the product list.
+// This ProductsSection component creates an engaging display of products, 
+// using advanced animations and responsive design to create a modern and 
+// interactive user interface. It's structured to be easily maintainable, with the 
+// product data separated from the rendering logic, allowing for easy updates or 
+// additions to the product list.
+
 
 function useButtonMotion() {
   const x = useMotionValue(0);

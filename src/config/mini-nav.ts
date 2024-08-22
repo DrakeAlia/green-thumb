@@ -1,7 +1,10 @@
 import { useMotionValue, useTransform, MotionValue } from "framer-motion";
 import { MainNavItem, SidebarNavItem } from "../types/nav";
 
-// The file imports motion-related functions from Framer Motion and custom navigation types.
+// This mini-nav configuration and utility file plays a crucial role in the application's
+// navigation system and UI interactions. It provides a centralized place for
+// navigation structure and reusable functions for animations and scrolling,
+// contributing to a consistent and interactive user experience across the application.
 
 // Custom hook for button motion effects
 export function useButtonMotion() {

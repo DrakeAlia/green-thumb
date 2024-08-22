@@ -1,4 +1,8 @@
-// This file serves as a central configuration for key information about the website or application.
+// This site.ts file is a crucial part of the application's architecture.
+// It centralizes important site-wide information, making it easier to maintain
+// and update. The use of TypeScript for type definitions ensures that this
+// configuration can be used safely throughout the application, reducing the
+// likelihood of errors related to misspelled property names or incorrect value types.
 
 // The siteConfig object contains key information about the website
 export const siteConfig = {

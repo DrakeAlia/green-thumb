@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Indicates this is a client-side component
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
@@ -28,14 +28,23 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
+// This CommandMenu component is a powerful and flexible tool for navigating the
+// application. It provides quick access to different sections, pages, and
+// settings through a keyboard-accessible interface. The component is highly dynamic,
+// pulling in navigation configurations from external sources and adapting to the
+// current application state. It enhances the overall user experience by offering a
+// centralized, searchable command interface for various actions within the application.
+
 export function CommandMenu({ ...props }: DialogProps) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const { setTheme } = useTheme();
 
+  // Effect for keyboard shortcut to open/close the command menu
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
+        // Prevent triggering in editable elements
         if (
           (e.target instanceof HTMLElement && e.target.isContentEditable) ||
           e.target instanceof HTMLInputElement ||
@@ -54,11 +63,13 @@ export function CommandMenu({ ...props }: DialogProps) {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // Function to run commands and close the menu
   const runCommand = React.useCallback((command: () => unknown) => {
     setOpen(false);
     command();
   }, []);
 
+  // Function to handle scrolling to sections
   const handleScroll = (sectionId: string) => {
     if (window.location.pathname !== "/") {
       router.push("/");
@@ -68,6 +79,7 @@ export function CommandMenu({ ...props }: DialogProps) {
     }
   };
 
+  // Helper function to scroll to a specific section
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -84,6 +96,7 @@ export function CommandMenu({ ...props }: DialogProps) {
 
   return (
     <>
+      {/* Search button to open the command menu */}
       <Button
         variant="outline"
         className={cn(
@@ -98,10 +111,14 @@ export function CommandMenu({ ...props }: DialogProps) {
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
+
+      {/* Command Dialog */}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
+
+          {/* Sections group */}
           <CommandGroup heading="Sections">
             <CommandItem
               value="Features"
@@ -118,6 +135,8 @@ export function CommandMenu({ ...props }: DialogProps) {
               Products
             </CommandItem>
           </CommandGroup>
+
+          {/* Links group */}
           <CommandGroup heading="Links">
             {miniNavConfig.mainNav
               .filter((navitem) => !navitem.external)
@@ -134,6 +153,8 @@ export function CommandMenu({ ...props }: DialogProps) {
                 </CommandItem>
               ))}
           </CommandGroup>
+
+          {/* Sidebar navigation groups */}
           {miniNavConfig.sidebarNav.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem) => (
@@ -152,7 +173,10 @@ export function CommandMenu({ ...props }: DialogProps) {
               ))}
             </CommandGroup>
           ))}
+
           <CommandSeparator />
+
+          {/* Theme selection group */}
           <CommandGroup heading="Theme">
             <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
               <SunIcon className="mr-2 h-4 w-4" />

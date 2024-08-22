@@ -15,6 +15,12 @@ import { Button, buttonVariants } from "./ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+// This FeaturesSection component is a highly interactive and visually engaging way
+// to present key features of a product or service. It combines modern web
+// technologies like React hooks, advanced animations, and responsive design to create a polished and
+// professional user interface. The component is structured to be easily maintainable and extendable,
+// with the features data separated from the rendering logic.
+
 function useButtonMotion() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);

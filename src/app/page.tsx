@@ -28,12 +28,18 @@ import {
 } from "@/components/ui/page-header";
 import dynamic from "next/dynamic";
 
-const ProductsSection = dynamic(() => import("@/components/products"), {
-  ssr: false,
-});
-const FeaturesSection = dynamic(() => import("@/components/features"), {
-  ssr: false,
-});
+const ProductsSection = dynamic(
+  () => import("@/components/layout/products/product-grid"),
+  {
+    ssr: false,
+  }
+);
+const FeaturesSection = dynamic(
+  () => import("@/components/layout/features/feature-list"),
+  {
+    ssr: false,
+  }
+);
 
 function AnimatedSection({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);

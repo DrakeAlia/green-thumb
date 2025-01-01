@@ -4,12 +4,15 @@ import { motion as m, LazyMotion, domAnimation } from "framer-motion";
 import { useAnimationControls } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import ProductCard from "./product-card";
 import { products } from "@/data/products";
 
 const ProductGrid = () => {
   const controls = useAnimationControls();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     if (inView) {
@@ -51,32 +54,34 @@ const ProductGrid = () => {
         />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-full">
-          <m.h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-16 sm:mb-20 lg:mb-24 text-primary relative overflow-hidden cursor-default"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <m.span
-              initial={{ display: "inline-block" }}
-              animate={{ rotate: [0, 10, 0] }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                repeatType: "reverse",
-              }}
+          {isHomePage && (
+            <m.h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-16 sm:mb-20 lg:mb-24 text-primary relative overflow-hidden cursor-default"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+              whileHover={{ scale: 1.05 }}
             >
-              🛒
-            </m.span>{" "}
-            <m.span
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              Our Products
-            </m.span>
-          </m.h2>
+              <m.span
+                initial={{ display: "inline-block" }}
+                animate={{ rotate: [0, 10, 0] }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              >
+                🛒
+              </m.span>{" "}
+              <m.span
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                Our Products
+              </m.span>
+            </m.h2>
+          )}
 
           <m.div
             className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 sm:gap-12 lg:gap-16"

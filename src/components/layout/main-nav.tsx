@@ -4,6 +4,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 import { Button, buttonVariants } from "../ui/button";
@@ -113,28 +114,29 @@ export function MainNav() {
   return (
     <div className="hidden md:flex items-center justify-between w-full">
       {/* Logo button */}
-      <MotionButton
-        variant="ghost"
-        className="mr-6 flex items-center space-x-2 min-w-[150px]"
-        onClick={scrollToTop}
-      >
-        <motion.div
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="flex-shrink-0"
+      <Link href="/" className="mr-6">
+        <MotionButton
+          variant="ghost"
+          className="flex items-center space-x-2 min-w-[150px]"
         >
-          <Image
-            className="h-9 w-9 rounded-lg"
-            src="/images/logo.png"
-            alt="Logo"
-            width={50}
-            height={50}
-          />
-        </motion.div>
-        <span className="hidden font-bold sm:inline-block">
-          {siteConfig.name}
-        </span>
-      </MotionButton>
+          <motion.div
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="flex-shrink-0"
+          >
+            <Image
+              className="h-9 w-9 rounded-lg"
+              src="/images/logo.png"
+              alt="Logo"
+              width={50}
+              height={50}
+            />
+          </motion.div>
+          <span className="hidden font-bold sm:inline-block">
+            {siteConfig.name}
+          </span>
+        </MotionButton>
+      </Link>
 
       {/* Navigation menu */}
       <nav className="flex-grow flex justify-center items-center">

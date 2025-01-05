@@ -6,9 +6,13 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import FeatureCard from "./feature-card";
 import { features } from "@/data/features";
-import { setTransform } from "@/hooks/use-button-motion";
+import {
+  PageHeader,
+  PageHeaderHeading,
+  PageHeaderDescription,
+} from "@/components/ui/page-header";
 
-const FeatureList = () => {
+const FeaturesSection = () => {
   const controls = useAnimationControls();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
@@ -103,4 +107,4 @@ const FeatureList = () => {
   );
 };
 
-export default FeatureList;
+export default FeaturesSection;

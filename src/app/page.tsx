@@ -26,16 +26,21 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/ui/page-header";
+import FeatureCard from "@/components/layout/features/feature-card";
+import ProductCard from "@/components/layout/products/product-card";
+import { features } from "@/data/features";
+import { products } from "@/data/products";
 import dynamic from "next/dynamic";
 
 const ProductsSection = dynamic(
-  () => import("@/components/layout/products/product-grid"),
+  () => import("@/components/layout/products/products-section"),
   {
     ssr: false,
   }
 );
+
 const FeaturesSection = dynamic(
-  () => import("@/components/layout/features/feature-list"),
+  () => import("@/components/layout/features/features-section"),
   {
     ssr: false,
   }

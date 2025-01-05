@@ -6,6 +6,8 @@ export interface Product {
   description: string;
   details: string;
   price: string;
+  features?: string[];
+  stockStatus?: "In Stock" | "Out of Stock" | "Pre-order";
 }
 
 export const products: Product[] = [

@@ -7,8 +7,13 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import ProductCard from "./product-card";
 import { products } from "@/data/products";
+import {
+  PageHeader,
+  PageHeaderHeading,
+  PageHeaderDescription,
+} from "@/components/ui/page-header";
 
-const ProductGrid = () => {
+const ProductsSection = () => {
   const controls = useAnimationControls();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const pathname = usePathname();
@@ -108,4 +113,4 @@ const ProductGrid = () => {
   );
 };
 
-export default ProductGrid;
+export default ProductsSection;

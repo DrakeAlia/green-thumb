@@ -1,9 +1,11 @@
 export interface Feature {
-  title: string;
-  image: string;
-  description: string;
   slug: string;
+  title: string;
+  description: string;
+  image: string;
   details: string;
+  category?: string;
+  benefits?: string[];
 }
 
 export const features: Feature[] = [

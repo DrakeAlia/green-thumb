@@ -26,16 +26,41 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/ui/page-header";
-import FeatureCard from "@/components/layout/features/feature-card";
-import ProductCard from "@/components/layout/products/product-card";
-import { features } from "@/data/features";
-import { products } from "@/data/products";
+import { ErrorBoundary } from "react-error-boundary";
 import dynamic from "next/dynamic";
+
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
+function ErrorFallback() {
+  return (
+    <div className="text-center p-4">
+      <h2 className="text-lg font-semibold">Something went wrong</h2>
+      <Button onClick={() => window.location.reload()}>Try again</Button>
+    </div>
+  );
+}
+
+const LoadingSkeleton = () => (
+  <div className="w-full max-w-6xl mx-auto space-y-8 p-8">
+    <div className="h-8 bg-muted animate-pulse rounded-lg w-1/3" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="h-64 bg-muted animate-pulse rounded-lg" />
+      ))}
+    </div>
+  </div>
+);
 
 const ProductsSection = dynamic(
   () => import("@/components/layout/products/products-section"),
   {
     ssr: false,
+    loading: () => <LoadingSkeleton />,
   }
 );
 
@@ -43,6 +68,7 @@ const FeaturesSection = dynamic(
   () => import("@/components/layout/features/features-section"),
   {
     ssr: false,
+    loading: () => <LoadingSkeleton />,
   }
 );
 
@@ -131,6 +157,7 @@ export default function Home() {
       <motion.section
         className="relative overflow-hidden"
         style={{ height: coverImageHeight, minHeight: "600px" }}
+        aria-label="Hero Section"
       >
         <motion.div
           className="absolute inset-0 bg-gradient-to-b from-transparent"
@@ -237,9 +264,10 @@ export default function Home() {
                       </motion.div>
 
                       <MotionButton
+                        onClick={() => scrollToSection("features")}
                         className={cn(
                           buttonVariants({ size: "lg", variant: "secondary" }),
-                          "w-full "
+                          "w-full"
                         )}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -262,19 +290,28 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <section id="features" className="py-8 md:py-16">
-        <AnimatedSection>
-          <FeaturesSection />
-        </AnimatedSection>
+      <section
+        id="features"
+        className="py-8 md:py-16"
+        aria-label="Features Section"
+      >
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <AnimatedSection>
+            <FeaturesSection />
+          </AnimatedSection>
+        </ErrorBoundary>
       </section>
 
       <section
         id="products"
         className="flex-grow flex flex-col items-center justify-center p-2"
+        aria-label="Products Section"
       >
-        <AnimatedSection>
-          <ProductsSection />
-        </AnimatedSection>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <AnimatedSection>
+            <ProductsSection />
+          </AnimatedSection>
+        </ErrorBoundary>
       </section>
 
       <motion.div

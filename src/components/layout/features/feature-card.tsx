@@ -29,7 +29,7 @@ const FeatureCard = ({ feature }: FeatureCardProps) => {
       className="h-full rounded-lg"
     >
       <Card className="h-full flex flex-col rounded-lg overflow-hidden backdrop-blur-sm p-4 sm:p-6">
-        <CardHeader className="pb-2 sm:pb-4 text-center">
+        <CardHeader className="pb-2 sm:pb-4 text-center h-[60px] sm:h-[70px] flex items-center justify-center">
           <m.h3
             className="text-xl sm:text-2xl font-semibold text-primary"
             whileHover={{
@@ -41,6 +41,7 @@ const FeatureCard = ({ feature }: FeatureCardProps) => {
             {feature.title}
           </m.h3>
         </CardHeader>
+
         <m.div
           className="w-full aspect-video sm:aspect-square relative overflow-hidden mb-2 sm:mb-4 rounded-sm"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -55,44 +56,48 @@ const FeatureCard = ({ feature }: FeatureCardProps) => {
             className="absolute top-0 left-0 w-full h-full transition-transform duration-300 hover:scale-110 rounded-sm object-cover"
           />
         </m.div>
-        <CardContent className="flex-grow flex flex-col items-center justify-center">
+
+        <CardContent className="flex-1 flex flex-col min-h-[200px]">
           <m.p
-            className="text-md sm:text-base text-muted-foreground text-center mt-2 mb-4"
+            className="text-md sm:text-base text-muted-foreground text-center mb-6 flex-grow"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             {feature.description}
           </m.p>
-          <Link href={`/features/${feature.slug}`} className="w-full">
-            <m.div
-              onPointerMove={(event) => {
-                const item = event.currentTarget;
-                setTransform(item, event, buttonMotion.x, buttonMotion.y);
-              }}
-              onPointerLeave={() => {
-                buttonMotion.x.set(0);
-                buttonMotion.y.set(0);
-              }}
-              style={{ x: buttonMotion.x, y: buttonMotion.y }}
-            >
-              <MotionButton
-                className="w-full"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
+
+          <div className="mt-auto pt-4">
+            <Link href={`/features/${feature.slug}`} className="w-full block">
+              <m.div
+                onPointerMove={(event) => {
+                  const item = event.currentTarget;
+                  setTransform(item, event, buttonMotion.x, buttonMotion.y);
+                }}
+                onPointerLeave={() => {
+                  buttonMotion.x.set(0);
+                  buttonMotion.y.set(0);
+                }}
+                style={{ x: buttonMotion.x, y: buttonMotion.y }}
               >
-                <m.span
-                  style={{ x: buttonMotion.textX, y: buttonMotion.textY }}
-                  className="z-10 relative"
+                <MotionButton
+                  className="w-full"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  Learn More
-                </m.span>
-              </MotionButton>
-            </m.div>
-          </Link>
+                  <m.span
+                    style={{ x: buttonMotion.textX, y: buttonMotion.textY }}
+                    className="z-10 relative"
+                  >
+                    Learn More
+                  </m.span>
+                </MotionButton>
+              </m.div>
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </m.div>

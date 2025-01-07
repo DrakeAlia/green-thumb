@@ -15,6 +15,15 @@ import { useButtonMotion, setTransform } from "@/hooks/use-button-motion";
 
 const MotionButton = m(Button);
 
+const cardVariants = {
+  offscreen: { y: 50, opacity: 0 },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.8 },
+  },
+};
+
 interface ProductCardProps {
   product: Product;
 }
@@ -24,6 +33,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <m.div
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={cardVariants}
       whileHover={{
         scale: 1.03,
         boxShadow: "0px 0px 15px rgba(229, 222, 20, 0.727)",

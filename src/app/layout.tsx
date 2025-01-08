@@ -50,9 +50,24 @@ export const metadata: Metadata = {
     creator: "@drake___alia",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/public/favicon-16x16.png",
-    apple: "/public/apple-touch-icon.png",
+    icon: [
+      {
+        url: "/images/logo.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/images/logo.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/images/logo.png",
+    apple: {
+      url: "/images/logo.png",
+      type: "image/png",
+      rel: "apple-touch-icon",
+    },
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
 };

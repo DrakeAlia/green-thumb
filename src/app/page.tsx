@@ -97,7 +97,7 @@ function useButtonMotion() {
 }
 const MotionButton = motion(Button);
 
-// Home page component
+// Home page component for green thumb app
 export default function Home() {
   const buttonMotion = useButtonMotion();
 
